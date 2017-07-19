@@ -9,12 +9,12 @@
 
   <bean id="quartzDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="org.postgresql.Driver"/>
-    <property name="url" value="jdbc:postgresql://localhost:5432/quartz"/>
-    <property name="username" value="quartz"/>
-    <property name="password" value="quartz"/>
+    <property name="url" value="jdbc:postgresql://localhost:5432/sqladmin"/>
+    <property name="username" value="sqladmin"/>
+    <property name="password" value="sqladmin"/>
   </bean>
 
-  <bean id="quartz" class="org.apache.camel.component.quartz.QuartzComponent">
+  <bean id="quartz2" class="org.apache.camel.component.quartz2.QuartzComponent">
     <property name="scheduler" ref="scheduler"/>
   </bean>
 
@@ -43,7 +43,7 @@
 
   <camelContext xmlns="http://camel.apache.org/schema/spring" id="quartzCluster" managementNamePattern="#name#">
     <route id="clusteredRoute">
-      <from uri="quartz://clustergroup/clusterTimerName?job.name=demoQuartzCluster&amp;cron=0/5+*+*+*+*+?"/>
+      <from uri="quartz2://clustergroup/clusterTimerName?job.name=demoQuartzCluster&amp;cron=0/5+*+*+*+*+?"/>
       <log message="Fired quartz cluster trigger"/>
     </route>
   </camelContext>

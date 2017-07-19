@@ -138,16 +138,22 @@ sshPort=8201
 ### Start and install features
 Run the following commands from the karaf command line:
 
-`features:install quartz`
-
-`features: install spring-jdbc`
+`features:install spring-jdbc`
 
 ### Install the PostgreSQL JDBC driver
 
 The proper way to do it would be to install it in your local repository with the right felix-export and import options, and then install it in Fuse.
 A quick workaround for testing purposes would be to do a `wrap` install as below:
 
+`install -s 'wrap:mvn:com.zaxxer/HikariCP/2.6.3'`
+
+`install -s 'wrap:mvn:org.quartz-scheduler/quartz/2.3.0'`
+
 `install -s wrap:file://<path_to_postgresql_jdbc.jar>`
+
+`install -s 'wrap:mvn:postgresql/postgresql/9.2-1002.jdbc4'`
+
+`install -s 'wrap:mvn:commons-dbcp/commons-dbcp/1.4'`
 
 ### Compile and install this application bundle
 

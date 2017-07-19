@@ -13,14 +13,32 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <version.compiler.plugin>2.3.1</version.compiler.plugin>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
 
-    <camel.version>2.10.0.redhat-60024</camel.version>
-    <log4j.version>1.2.17</log4j.version>
-    <slf4j.version>1.7.5</slf4j.version>
+    <!-- the version of the BOM, defining all the dependency versions -->
+    <fabric8.bom.version>1.2.0.redhat-630187</fabric8.bom.version>
+    <fabric.version>1.2.0.redhat-630187</fabric.version>
 
-    <maven.bundle.plugin.version>2.3.7</maven.bundle.plugin.version>
+    <!-- fabric8 deploy profile configuration -->
+    <fabric8.profile>camel-basic</fabric8.profile>
+    <fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
+    <fabric8.features/>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8.bom</groupId>
+        <artifactId>fabric8-bom</artifactId>
+        <version>${fabric8.bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <repositories>
     <repository>
@@ -98,34 +116,44 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-quartz</artifactId>
-      <version>${camel.version}</version>
+    <groupId>org.apache.camel</groupId>
+    <artifactId>camel-quartz2</artifactId>
+  </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j.version}</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
     </dependency>
 
   </dependencies>
@@ -135,12 +163,11 @@
 
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>${version.compiler.plugin}</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
         </configuration>
       </plugin>
       <plugin>
@@ -154,7 +181,7 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-        <version>${maven.bundle.plugin.version}</version>
+        <version>${version.maven-bundle-plugin}</version>
         <extensions>true</extensions>
         <configuration>
           <instructions>
@@ -162,7 +189,7 @@
             <Private-Package>com.redhat.gps.*</Private-Package>
             <Import-Package>
               javax.sql,
-              org.apache.camel.component.quartz,
+              org.apache.camel.component.quartz2,
               org.quartz.simpl,
               org.quartz.impl.jdbcjobstore,
               org.springframework.jdbc,
