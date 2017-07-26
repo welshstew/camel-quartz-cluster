@@ -1,5 +1,7 @@
 # Camel Quartz cluster
 
+#### NOTE: Updated and tested locally against jboss-fuse-karaf-6.3.0.redhat-262
+
 Red Hat JBoss Fuse can be used to load balance and cluster using Fuse Fabric.
 In the absence of Fabric, there are a few options to achieve this particular functionality. These options include:
 
@@ -7,7 +9,6 @@ In the absence of Fabric, there are a few options to achieve this particular fun
 * Camel Quartz - This component has clustering support. If you are using quartz consumers, in clustered mode, you can have only one of the routes triggered at a time.
 * Camel JGroups - Using JGroupsFilters, we can get master/slave capability
 
-#### NOTE: This demo has been created using Red Hat JBoss Fuse 6.0.0-redhat-60024, so the version of Camel that we are limited to is 2.10-redhat-60024, which only supports Quartz 1.x components.
 
 #### This code is not supported by my employer - Red Hat. I have made this available online to save someone an hour or so of Google searches.
 
@@ -139,6 +140,7 @@ sshPort=8201
 Run the following commands from the karaf command line:
 
 `features:install spring-jdbc`
+`features:install camel-quartz2`
 
 ### Install the PostgreSQL JDBC driver
 
@@ -146,13 +148,7 @@ The proper way to do it would be to install it in your local repository with the
 A quick workaround for testing purposes would be to do a `wrap` install as below:
 
 `install -s 'wrap:mvn:com.zaxxer/HikariCP/2.6.3'`
-
-`install -s 'wrap:mvn:org.quartz-scheduler/quartz/2.3.0'`
-
-`install -s wrap:file://<path_to_postgresql_jdbc.jar>`
-
 `install -s 'wrap:mvn:postgresql/postgresql/9.2-1002.jdbc4'`
-
 `install -s 'wrap:mvn:commons-dbcp/commons-dbcp/1.4'`
 
 ### Compile and install this application bundle
