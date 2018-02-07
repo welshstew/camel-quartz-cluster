@@ -192,9 +192,11 @@
               org.apache.camel.component.quartz2,
               org.quartz.simpl,
               org.quartz.impl.jdbcjobstore,
+              org.quartz.impl.jdbcjobstore.oracle,
               org.springframework.jdbc,
               org.springframework.jdbc.support,
-              org.postgresql,
+              oracle.jdbc,
+              oracle.jdbc.driver,
               *;resolution:=optional
             </Import-Package>
             <Include-Resource>src/main/resources</Include-Resource>

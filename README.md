@@ -23,11 +23,13 @@ Clustering is achieved by using database as a Persistence layer which can help w
 
 ```xml
 <bean id="quartzDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-    <property name="driverClassName" value="org.postgresql.Driver"/>
-    <property name="url" value="jdbc:postgresql://localhost:5432/quartz"/>
-    <property name="username" value="quartz"/>
-    <property name="password" value="quartz"/>
-</bean>
+    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:thin:@yourdatabaseip:1521:ORCL"/>
+    <property name="username" value="sqladmin"/>
+    <property name="password" value="sqladmin"/>
+    <property name="maxActive" value="200"/>
+    <property name="poolPreparedStatements" value="true"/>
+  </bean>
 ```
 
 Camel Quartz component is initialized with a reference to the scheduler bean:
@@ -87,10 +89,9 @@ The camel context has been configured to fire off every 5 seconds and print a lo
 
 ## Testing
 
-### Create database and tables in PostgreSQL
+### Create database and tables in Oracle
 
-Run the commands from the file `tables_postgres.sql` to create the Quartz tables required for JDBC persistence. Double check the port and credentials used in the `camel-context.xml` file for the PostgreSQL datasource.
-
+Run the commands from the file `tables_oracle.sql` to create the Quartz tables required for JDBC persistence. Double check the port and credentials used in the `camel-context.xml` file for the Oracle datasource.
 
 ### Install two versions of Red Hat JBoss Fuse (this test was done using version 6.0.0-redhat-60024)
 
@@ -142,13 +143,10 @@ Run the following commands from the karaf command line:
 `features:install spring-jdbc`
 `features:install camel-quartz2`
 
-### Install the PostgreSQL JDBC driver
-
-The proper way to do it would be to install it in your local repository with the right felix-export and import options, and then install it in Fuse.
-A quick workaround for testing purposes would be to do a `wrap` install as below:
+### Install the Oracle JDBC Driver 
 
 `install -s 'wrap:mvn:com.zaxxer/HikariCP/2.6.3'`
-`install -s 'wrap:mvn:postgresql/postgresql/9.2-1002.jdbc4'`
+`install wrap:file:/home/username/.m2/repository/com/oracle/ojdbc7/7.0.0/ojdbc7-7.0.0.jar`
 `install -s 'wrap:mvn:commons-dbcp/commons-dbcp/1.4'`
 
 ### Compile and install this application bundle
